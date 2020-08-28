@@ -12,13 +12,7 @@ import pymongo
 app = Flask(__name__, template_folder='template')
 #app = Flask(__name__)
 
-# Start Structure | WEEK 12 - Last Activities of Day 3 (8-10) 
-# and Extra Content; For Reference
 
-# Use PyMongo to establish Mongo Connection
-# mongo = PyMongo(app, uri="mongodb://localhost:27017/mars")
-
-# Elie said to try using this, might solve "jinja error" 
 # app.config["MONGO_URI"] = "mongodb://localhost:27017/mission_to_mars"
 app.config["MONGO_URI"] = "mongodb://localhost:27017/mars"
 mongo = PyMongo(app)
@@ -30,13 +24,7 @@ mongo = PyMongo(app)
 # Route to render index.html template using data from Mongo
 @app.route("/")
 def index():
-    # FLASK TEST, CHECKING FOR CONNECTION 
-    # return "<h1>Mission To Mars - THE APP IS RUNNING!</h>"
-
-    # Find one record  of data from the Mongo Database
-    # mars = mongo.db.collections.find_one()
-    
-    # mars = client.db.mars.find_one()
+   
     mars = mongo.db.mars.find_one()
     
     # Return template and data
