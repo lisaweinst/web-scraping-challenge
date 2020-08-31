@@ -28,7 +28,7 @@ def scrape():
     # define url
 
     mars_news_url = "https://mars.nasa.gov/news/"
-    #time.sleep(3)
+    time.sleep(3)
     browser.visit(mars_news_url)
     #putting a sleep function here seems to make the flask application run
     time.sleep(3)
@@ -37,10 +37,9 @@ def scrape():
     mars_news_soup = BeautifulSoup(html, 'html.parser')
 
 
-
+    # I added a few time.sleep(3) functions to allow the browser time to scrape the data. Hopefully that works.
     
     # find the first news title
-    #article = mars_news_soup.find("div", class_='list_text')
     news_title = mars_news_soup.body.find("div", class_="content_title").text
 
     # find the paragraph associated with the first title
@@ -106,7 +105,7 @@ def scrape():
     df = table[2]
     df.columns = ["Description", "Value"]
 
-    # convert to html table
+    # converting data to html table
 
     mars_facts_html=df.to_html()
 
@@ -163,7 +162,7 @@ def scrape():
     # create a soup item
     schiap_html = browser.html
     schiap_soup = BeautifulSoup(schiap_html, 'html.parser')
-
+    #obtaining the image of the schiaparelli
     schiap = schiap_soup.body.find('img', class_ = 'wide-image')
     schiap_img = schiap['src']
 
@@ -239,7 +238,7 @@ def scrape():
         {"title": "Syrtis Major Hemisphere", "img_url": syrtis_url}
     ]
 
-    
+    # dictionary should be returned 
     mars_dict = {
         'latestheadline': news_title,
         'latestparagraph':  news_p,
