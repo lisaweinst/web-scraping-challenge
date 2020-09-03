@@ -53,38 +53,25 @@ def scrape():
 
     browser.visit(mars_image_url)
 
-    # click on the Full Image button. I couldn't get it to work with partial text, so used the id.
-
-    browser.click_link_by_id('full_image')
-
-    # click on the more info button to get to the large image
-
-    browser.click_link_by_partial_text('more info')
 
     # create the soup item
 
-    image_html = browser.html
-    mars_image_soup = BeautifulSoup(image_html, 'html.parser')
+    html_image = browser.html
+    mars_imaging = BeautifulSoup(html_image, 'html.parser')
 
     # the large image is within the figue element with class = lede
-    image = mars_image_soup.body.find("figure", class_="lede")
+    image = mars_imaging.body.find("figure", class_="lede")
 
-    # the url is within the a element, so search for a element and then extract the url
-    link = image.find('a')
-    href = link['href']
-
-    # define the beginning of the url as the returned href doesn't included it
-    base_url='https://www.jpl.nasa.gov'
-
-    # create the full url
-    featured_image_url = base_url + href
+    #obtaining the url for the photo
+    feat_img_url = image.find('figure', class_='lede').a['href']
+    featured_image_url = f'https://www.jpl.nasa.gov{feat_img_url}'
 
     featured_image_url
 
     # ## Mars Weather
 
     # open url in browser
-    
+    #needs time to load
     time.sleep(3)
 
 
@@ -100,7 +87,7 @@ def scrape():
     # read html into pandas
     table = pd.read_html(mars_facts_url)
 
-    # It returns 3 tables. The first has the data needed, so will convert to a dataframe and clean up naming
+    # returns the value from an html table
 
     df = table[2]
     df.columns = ["Description", "Value"]
@@ -139,8 +126,9 @@ def scrape():
     cerberus_img = cerberus['src']
 
     hem_base_url = 'https://astrogeology.usgs.gov'
+    #will store url later
     cerberus_url = hem_base_url + cerberus_img
-    # print(cerberus_url)
+    
 
     # #### Schiaperelli hemisphere
 
@@ -158,7 +146,7 @@ def scrape():
 
     # click on the open button to get to enhanced picture
     browser.click_link_by_partial_text('Open')
-
+    #schiap html page
     # create a soup item
     schiap_html = browser.html
     schiap_soup = BeautifulSoup(schiap_html, 'html.parser')
@@ -240,8 +228,8 @@ def scrape():
 
     # dictionary should be returned 
     mars_dict = {
-        'latestheadline': news_title,
-        'latestparagraph':  news_p,
+        'headline': news_title,
+        'paragraph':  news_p,
         'featuredimage': featured_image_url,
     #    'currentweather': mars_weather,
         'factstable': mars_facts_html,
